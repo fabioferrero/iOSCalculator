@@ -63,6 +63,10 @@ struct CalculatorBrain {
         accumulator.append(Operand.operation(symbol))
     }
     
+    mutating func undoLast() {
+        accumulator.removeLast()
+    }
+    
     func evaluate(using variables: Dictionary<String,Double>? = nil) -> (result: Double?, isPending: Bool, description: String) {
         
         var descriptionAccumulator: String?

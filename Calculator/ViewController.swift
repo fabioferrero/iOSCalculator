@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var display: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var variableDisplay: UILabel!
     
     @IBAction func tapDigit(_ button: UIButton) {
         let digit = button.currentTitle!
@@ -79,11 +80,17 @@ class ViewController: UIViewController {
     
     @IBAction func setVariable(_ button: UIButton) {
         variables = ["M" : displayValue]
+        variableDisplay.text = "M: \(displayValue)"
         let result = brain.evaluate(using: variables)
         displayUpdate(with: result)
     }
     
-    @IBAction func eraseDigit(_ sender: UIButton) {
+    @IBAction func reset(_ sender: UIButton) {
+        variables.removeAll()
+        variableDisplay.text = " "
+    }
+    
+    @IBAction func undo(_ sender: UIButton) {
         if userIsTyping {
             if display.text!.count > 1 {
                 let lastChar = String(display.text!.removeLast())
@@ -95,6 +102,10 @@ class ViewController: UIViewController {
                 userIsTypingAFloatNumber = false
                 userIsTyping = false
             }
+        } else {
+            brain.undoLast()
+            let result = brain.evaluate(using: variables)
+            displayUpdate(with: result)
         }
     }
     

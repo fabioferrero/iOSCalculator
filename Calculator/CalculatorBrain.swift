@@ -13,11 +13,37 @@ import Foundation
  */
 struct CalculatorBrain {
     
-    private var accumulator: Double?
+    private var operand: Operand?
     private var descriptionAccumulator: String?
     private var constantSymbol: String?
     private var unaryAfterBinary = false
     private var pendingBinaryOperation: PendingBinaryOperation?
+    
+    private var accumulator: Double? {
+        get {
+            if let op = operand {
+                switch op {
+                case .number(let value):
+                    return value
+                case .variable(let name):
+                    if let variableValue = variables[name] {
+                        return variableValue
+                    } else {
+                        return 0.0
+                    }
+                }
+            } else {
+                return nil
+            }
+        }
+        set {
+            if newValue != nil {
+                operand = Operand.number(newValue!)
+            } else {
+                operand = nil
+            }
+        }
+    }
     
     private var accumulatorString: String? {
         get {
@@ -32,6 +58,15 @@ struct CalculatorBrain {
         }
     }
     
+    private enum Operand {
+        /** The case where the operand is a number */
+        case number(Double)
+        /** The case where the operand is a variable */
+        case variable(String)
+    }
+    
+    private var variables = [String:Double]();
+    
     private enum Operation {
         case constant(Double)
         case unaryOperation((Double) -> Double)
@@ -39,13 +74,6 @@ struct CalculatorBrain {
         case equals
         case rand
         case reset
-    }
-    
-    private enum Operand {
-        /** The case where the operand is a number */
-        case number(Double)
-        /** The case where the operand is a variable */
-        case variable(String)
     }
     
     private var operations: Dictionary<String,Operation> = [
@@ -65,6 +93,16 @@ struct CalculatorBrain {
     "AC" : Operation.reset,
     "rand" : Operation.rand
     ]
+    
+    mutating func setOperand(_ operand: Double) {
+        accumulator = operand
+        constantSymbol = nil
+    }
+    
+    mutating func setOperand(variable named: String) {
+        operand = Operand.variable(named)
+        constantSymbol = nil
+    }
     
     mutating func performOperation(_ symbol: String) {
         if let operation = operations[symbol] {
@@ -128,15 +166,6 @@ struct CalculatorBrain {
         func perform(with secondOperand: Double) -> Double {
             return function(firstOperand, secondOperand)
         }
-    }
-    
-    mutating func setOperand(_ operand: Double) {
-        accumulator = operand
-        constantSymbol = nil
-    }
-    
-    func setOperand(variable named: String) {
-        
     }
     
     /**

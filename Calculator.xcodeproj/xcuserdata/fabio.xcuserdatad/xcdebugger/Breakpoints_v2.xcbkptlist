@@ -10,29 +10,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Calculator/CalculatorBrain.swift"
-            timestampString = "528277921.785606"
+            timestampString = "528286979.353726"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
-            landmarkName = "performPendingBinaryOperation()"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
+            landmarkName = "evaluate(using:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Calculator/CalculatorBrain.swift"
-            timestampString = "528277921.790631"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
-            landmarkName = "performOperation(_:)"
-            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "default argument 0 of Calculator.CalculatorBrain.evaluate(using: Swift.Optional&lt;Swift.Dictionary&lt;Swift.String, Swift.Double&gt;&gt;) -&gt; (result: Swift.Optional&lt;Swift.Double&gt;, isPending: Swift.Bool, description: Swift.String)"
+                  moduleName = "Calculator"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fabio/Developer/iOS/Calculator/Calculator/CalculatorBrain.swift"
+                  timestampString = "528286880.840254"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "77"
+                  endingLineNumber = "77"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Calculator.CalculatorBrain.evaluate(using: Swift.Optional&lt;Swift.Dictionary&lt;Swift.String, Swift.Double&gt;&gt;) -&gt; (result: Swift.Optional&lt;Swift.Double&gt;, isPending: Swift.Bool, description: Swift.String)"
+                  moduleName = "Calculator"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/fabio/Developer/iOS/Calculator/Calculator/CalculatorBrain.swift"
+                  timestampString = "528286880.849924"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "80"
+                  endingLineNumber = "80"
+                  offsetFromSymbolStart = "259">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

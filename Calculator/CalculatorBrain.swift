@@ -13,59 +13,16 @@ import Foundation
  */
 struct CalculatorBrain {
     
-    private var operand: Operand?
-    private var descriptionAccumulator: String?
-    private var constantSymbol: String?
-    private var unaryAfterBinary = false
-    private var pendingBinaryOperation: PendingBinaryOperation?
-    
-    private var accumulator: Double? {
-        get {
-            if let op = operand {
-                switch op {
-                case .number(let value):
-                    return value
-                case .variable(let name):
-                    if let variableValue = variables[name] {
-                        return variableValue
-                    } else {
-                        return 0.0
-                    }
-                }
-            } else {
-                return nil
-            }
-        }
-        set {
-            if newValue != nil {
-                operand = Operand.number(newValue!)
-            } else {
-                operand = nil
-            }
-        }
-    }
-    
-    private var accumulatorString: String? {
-        get {
-            let formatter = NumberFormatter()
-            formatter.maximumFractionDigits = 6
-            formatter.usesSignificantDigits = true
-            if accumulator != nil {
-                return formatter.string(from: NSNumber(value: accumulator!))
-            } else {
-                return nil
-            }
-        }
-    }
+    private var accumulator = [Operand]()
     
     private enum Operand {
         /** The case where the operand is a number */
         case number(Double)
         /** The case where the operand is a variable */
         case variable(String)
+        /** The case where the operand is an operation */
+        case operation(String)
     }
-    
-    private var variables = [String:Double]();
     
     private enum Operation {
         case constant(Double)
@@ -95,77 +52,131 @@ struct CalculatorBrain {
     ]
     
     mutating func setOperand(_ operand: Double) {
-        accumulator = operand
-        constantSymbol = nil
+        accumulator.append(Operand.number(operand))
     }
     
     mutating func setOperand(variable named: String) {
-        operand = Operand.variable(named)
-        constantSymbol = nil
+        accumulator.append(Operand.variable(named))
     }
     
     mutating func performOperation(_ symbol: String) {
-        if let operation = operations[symbol] {
-            switch operation {
-            case .constant(let value):
-                accumulator = value
-                constantSymbol = symbol;
-            case .unaryOperation(let function):
-                if accumulator != nil {
-                    if descriptionAccumulator != nil {
-                        if resultIsPending {
-                            descriptionAccumulator = descriptionAccumulator! + " " + symbol + "(" + (constantSymbol ?? accumulatorString!) + ")"
-                            unaryAfterBinary = true
-                        } else {
-                            descriptionAccumulator = symbol + "(" + descriptionAccumulator! + ")"
-                        }
-                    } else {
-                        descriptionAccumulator = symbol + "(" + (constantSymbol ?? accumulatorString!) + ")"
-                    }
-                    accumulator = function(accumulator!)
+        accumulator.append(Operand.operation(symbol))
+    }
+    
+    func evaluate(using variables: Dictionary<String,Double>? = nil) -> (result: Double?, isPending: Bool, description: String) {
+        
+        var descriptionAccumulator: String?
+        var unaryAfterBinary = false
+        var pendingBinaryOperation: PendingBinaryOperation?
+        var constantSymbol: String?
+        
+        var result: Double?
+        var isPending: Bool {
+            get {
+                return pendingBinaryOperation != nil
+            }
+        }
+        var description: String = ""
+        
+        var resultString: String? {
+            get {
+                let formatter = NumberFormatter()
+                formatter.maximumFractionDigits = 6
+                formatter.usesSignificantDigits = true
+                if result != nil {
+                    return formatter.string(from: NSNumber(value: result!))
+                } else {
+                    return nil
                 }
-            case .binaryOperation(let function):
-                performPendingBinaryOperation()
-                if accumulator != nil {
-                    if descriptionAccumulator != nil {
-                        descriptionAccumulator = descriptionAccumulator! + " " + symbol
-                    } else {
-                        descriptionAccumulator = (constantSymbol ?? accumulatorString!) + " " + symbol
-                    }
-                    pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: accumulator!)
-                    accumulator = nil
+            }
+        }
+        
+        struct PendingBinaryOperation {
+            let function: (Double,Double) -> Double
+            let firstOperand: Double
+            
+            func perform(with secondOperand: Double) -> Double {
+                return function(firstOperand, secondOperand)
+            }
+        }
+        
+        func performPendingBinaryOperation() {
+            if pendingBinaryOperation != nil && result != nil && descriptionAccumulator != nil {
+                if !unaryAfterBinary {
+                    descriptionAccumulator = descriptionAccumulator! + " " + (constantSymbol ?? resultString!)
+                } else {
+                    unaryAfterBinary = false
                 }
-            case .equals:
-                performPendingBinaryOperation()
-            case .rand:
-                accumulator = Double(arc4random()) / Double(UInt32.max)
-            case .reset:
-                accumulator = 0.0
-                descriptionAccumulator = nil
+                result = pendingBinaryOperation?.perform(with: result!)
                 pendingBinaryOperation = nil
             }
         }
-    }
-    
-    private mutating func performPendingBinaryOperation() {
-        if pendingBinaryOperation != nil && accumulator != nil && descriptionAccumulator != nil {
-            if !unaryAfterBinary {
-                descriptionAccumulator = descriptionAccumulator! + " " + (constantSymbol ?? accumulatorString!)
-            } else {
-                unaryAfterBinary = false
-            }
-            accumulator = pendingBinaryOperation?.perform(with: accumulator!)
-            pendingBinaryOperation = nil
-        }
-    }
-    
-    private struct PendingBinaryOperation {
-        let function: (Double,Double) -> Double
-        let firstOperand: Double
         
-        func perform(with secondOperand: Double) -> Double {
-            return function(firstOperand, secondOperand)
+        for operand in accumulator {
+            switch operand {
+            case .number(let value):
+                result = value
+                constantSymbol = nil
+            case .variable(let variableName):
+                if let variableValue = variables?[variableName] {
+                    result = variableValue
+                } else {
+                    result = 0.0
+                }
+                constantSymbol = variableName
+            case .operation(let symbol):
+                if let operation = operations[symbol]   {
+                    switch operation {
+                    case .constant(let value):
+                        result = value
+                        constantSymbol = symbol;
+                    case .unaryOperation(let function):
+                        if result != nil {
+                            if descriptionAccumulator != nil {
+                                if isPending {
+                                    descriptionAccumulator = descriptionAccumulator! + " " + symbol + "(" + (constantSymbol ?? resultString!) + ")"
+                                    unaryAfterBinary = true
+                                } else {
+                                    descriptionAccumulator = symbol + "(" + descriptionAccumulator! + ")"
+                                }
+                            } else {
+                                descriptionAccumulator = symbol + "(" + (constantSymbol ?? resultString!) + ")"
+                            }
+                            result = function(result!)
+                        }
+                    case .binaryOperation(let function):
+                        performPendingBinaryOperation()
+                        if result != nil {
+                            if descriptionAccumulator != nil {
+                                descriptionAccumulator = descriptionAccumulator! + " " + symbol
+                            } else {
+                                descriptionAccumulator = (constantSymbol ?? resultString!) + " " + symbol
+                            }
+                            pendingBinaryOperation = PendingBinaryOperation(function: function, firstOperand: result!)
+                            result = nil
+                        }
+                    case .equals:
+                        performPendingBinaryOperation()
+                    case .rand:
+                        result = Double(arc4random()) / Double(UInt32.max)
+                    case .reset:
+                        result = 0.0
+                        descriptionAccumulator = nil
+                        pendingBinaryOperation = nil
+                    }
+                }
+            }
         }
+        if descriptionAccumulator != nil {
+            if isPending {
+                description = descriptionAccumulator! + " ..."
+            } else {
+                description = descriptionAccumulator! + " ="
+            }
+        } else {
+            description = "start typing some operations..."
+        }
+        return (result, isPending, description)
     }
     
     /**
@@ -173,7 +184,8 @@ struct CalculatorBrain {
      */
     var result: Double? {
         get {
-            return accumulator
+            let (evaluationResult, _, _) = evaluate()
+            return evaluationResult
         }
     }
     
@@ -182,7 +194,8 @@ struct CalculatorBrain {
      */
     var resultIsPending: Bool {
         get {
-            return pendingBinaryOperation != nil
+            let (_, isPending, _) = evaluate()
+            return isPending
         }
     }
     
@@ -191,16 +204,8 @@ struct CalculatorBrain {
      */
     var description: String {
         get {
-            if descriptionAccumulator != nil {
-                if resultIsPending {
-                    return descriptionAccumulator! + " ..."
-                } else {
-                    return descriptionAccumulator! + " ="
-                }
-            } else {
-                return "start typing some operations..."
-            }
+            let (_, _, resultDescription) = evaluate()
+            return resultDescription
         }
     }
-    
 }

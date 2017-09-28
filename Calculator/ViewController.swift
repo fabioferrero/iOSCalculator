@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     
     var userIsTyping = false
     var userIsTypingAFloatNumber = false
+    var variables = [String:Double]()
     
     @IBOutlet weak var display: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
@@ -42,11 +43,18 @@ class ViewController: UIViewController {
             let numberFormatter = NumberFormatter()
             numberFormatter.maximumFractionDigits = 6
             numberFormatter.usesSignificantDigits = true
-            display.text = numberFormatter.string(from: NSNumber(value: newValue)) //String(newValue)
+            display.text = numberFormatter.string(from: NSNumber(value: newValue))
         }
     }
     
     private var brain = CalculatorBrain()
+    
+    private func displayUpdate(with values: (result: Double?, isPending: Bool, description: String)) {
+        if let result = values.result {
+            displayValue = result
+        }
+        descriptionLabel.text = values.description
+    }
     
     @IBAction func performOperation(_ button: UIButton) {
         if userIsTyping {
@@ -57,12 +65,22 @@ class ViewController: UIViewController {
         if let mathematicalSymbol = button.currentTitle {
             brain.performOperation(mathematicalSymbol)
         }
-        if let result = brain.result {
-            displayValue = result
-            descriptionLabel.text = brain.description
-        } else if brain.resultIsPending {
-            descriptionLabel.text = brain.description
+        let result = brain.evaluate(using: variables)
+        displayUpdate(with: result)
+    }
+    
+    @IBAction func putVariable(_ button: UIButton) {
+        if !userIsTyping {
+            brain.setOperand(variable: "M")
+            let result = brain.evaluate(using: variables)
+            displayUpdate(with: result)
         }
+    }
+    
+    @IBAction func setVariable(_ button: UIButton) {
+        variables = ["M" : displayValue]
+        let result = brain.evaluate(using: variables)
+        displayUpdate(with: result)
     }
     
     @IBAction func eraseDigit(_ sender: UIButton) {

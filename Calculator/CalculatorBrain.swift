@@ -64,7 +64,9 @@ struct CalculatorBrain {
     }
     
     mutating func undoLast() {
-        accumulator.removeLast()
+        if !accumulator.isEmpty {
+            accumulator.removeLast()
+        }
     }
     
     func evaluate(using variables: Dictionary<String,Double>? = nil) -> (result: Double?, isPending: Bool, description: String) {

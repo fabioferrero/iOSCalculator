@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Calculator View Controller-->
+        <!--Calculator-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="CalculatorViewController" customModule="Calculator" customModuleProvider="target" sceneMemberID="viewController">
@@ -305,7 +305,7 @@
                                                             <color key="titleColor" red="0.016804177310000001" green="0.19835099580000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
                                                         <connections>
-                                                            <segue destination="UBh-ah-772" kind="showDetail" identifier="presentGraph" id="X11-XW-70p"/>
+                                                            <segue destination="Gtv-mM-Uac" kind="showDetail" identifier="presentGraph" id="X11-XW-70p"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1dg-ia-jxH">
@@ -371,7 +371,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="tep-Nt-WlH"/>
+                    <navigationItem key="navigationItem" title="Calculator" id="tep-Nt-WlH"/>
                     <connections>
                         <outlet property="descriptionLabel" destination="2B2-Fy-s79" id="pgW-zj-5bx"/>
                         <outlet property="display" destination="xRo-Kh-eoF" id="a3Z-eM-Yyv"/>
@@ -382,7 +382,7 @@
             </objects>
             <point key="canvasLocation" x="476" y="133.5832083958021"/>
         </scene>
-        <!--Graph View Controller-->
+        <!--Graph-->
         <scene sceneID="Qiq-OA-dsd">
             <objects>
                 <viewController id="UBh-ah-772" customClass="GraphViewController" customModule="Calculator" customModuleProvider="target" sceneMemberID="viewController">
@@ -404,13 +404,14 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gE4-p8-kVv"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Graph" id="Yp1-Q9-9u2"/>
                     <connections>
                         <outlet property="graphView" destination="zvd-vO-WXT" id="br0-uO-D76"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gJh-Ik-WdW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-359" y="905"/>
+            <point key="canvasLocation" x="476" y="904"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="Ct2-HQ-tRr">
@@ -418,7 +419,7 @@
                 <splitViewController id="brG-Qf-yrY" sceneMemberID="viewController">
                     <connections>
                         <segue destination="oT1-pB-Aju" kind="relationship" relationship="masterViewController" id="GOi-4g-8bl"/>
-                        <segue destination="UBh-ah-772" kind="relationship" relationship="detailViewController" id="ZUT-LM-Nmm"/>
+                        <segue destination="Gtv-mM-Uac" kind="relationship" relationship="detailViewController" id="ZUT-LM-Nmm"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7dm-zd-k16" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -442,6 +443,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gIt-WO-RDT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-358" y="134"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Iaf-sz-02t">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Gtv-mM-Uac" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="xar-hQ-HQQ">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="UBh-ah-772" kind="relationship" relationship="rootViewController" id="y6b-Qq-Wkd"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XMf-Ak-OZw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-360" y="904.94752623688169"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

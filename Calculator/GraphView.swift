@@ -8,14 +8,35 @@
 
 import UIKit
 
+protocol GraphViewDataSource {
+    func getYCoordinate(forX x: CGFloat) -> CGFloat?
+}
+
 @IBDesignable
 class GraphView: UIView {
-
-    let axisDrawer = AxesDrawer()
+    
+    // Public API
+    @IBInspectable
+    var scale: CGFloat = 1.0 { didSet { setNeedsDisplay() }}
+    
+    @IBInspectable
+    var lineWidth: CGFloat = 2.0 { didSet { setNeedsDisplay() }}
+    
+    var graphViewDataSource: GraphViewDataSource!
+    
+    var origin: CGPoint! { didSet { setNeedsDisplay() }}
+    
+    // Provate stuff
+    private let pointsPerUnit: CGFloat = 50
+    
+    private let axisDrawer = AxesDrawer()
     
     override func draw(_ rect: CGRect) {
-        let graphCenter = CGPoint(x: bounds.midX, y: bounds.midY)
-        axisDrawer.drawAxes(in: bounds, origin: graphCenter, pointsPerUnit: 50)
+        // Draw the axis
+        let pointsForScale = scale * pointsPerUnit
+        axisDrawer.drawAxes(in: bounds, origin: origin, pointsPerUnit: pointsForScale)
+        
+        // Draw the curve
     }
 
 }

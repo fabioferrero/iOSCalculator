@@ -8,18 +8,25 @@
 
 import UIKit
 
-class GraphViewController: UIViewController {
+class GraphViewController: UIViewController, GraphViewDataSource {
 
+    // The model
+    var function: ((Double) -> Double)? = nil
+    
+    // The view
     @IBOutlet weak var graphView: GraphView!
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        graphView.graphViewDataSource = self
+        graphView.origin = CGPoint(x: graphView.bounds.midX, y: graphView.bounds.midY)
     }
-    */
+    
+    func getYCoordinate(forX x: CGFloat) -> CGFloat? {
+        if let f = function {
+            return CGFloat(f(Double(x)))
+        }
+        return nil
+    }
 
 }

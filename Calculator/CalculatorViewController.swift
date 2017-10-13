@@ -18,6 +18,7 @@ class CalculatorViewController: UIViewController {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var variableDisplay: UILabel!
     
+    // TODO: modify for avoid multiple initial zeros
     @IBAction func tapDigit(_ button: UIButton) {
         let digit = button.currentTitle!
         if userIsTyping {
@@ -108,6 +109,12 @@ class CalculatorViewController: UIViewController {
             displayUpdate(with: result)
         }
     }
+    
+    /*
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     
+    }
+    */
     
 }
 

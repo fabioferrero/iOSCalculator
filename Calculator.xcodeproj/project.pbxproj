@@ -16,6 +16,7 @@
 		E51776121F86B47500F074F2 /* AxesDrawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51776111F86B47500F074F2 /* AxesDrawer.swift */; };
 		E51776141F86B98000F074F2 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51776131F86B98000F074F2 /* GraphView.swift */; };
 		E51D046B1F90BCFF009C76DA /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D046A1F90BCFF009C76DA /* GraphViewController.swift */; };
+		E51D046D1F90BEC6009C76DA /* Equation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51D046C1F90BEC6009C76DA /* Equation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		E51776111F86B47500F074F2 /* AxesDrawer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AxesDrawer.swift; sourceTree = "<group>"; };
 		E51776131F86B98000F074F2 /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		E51D046A1F90BCFF009C76DA /* GraphViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
+		E51D046C1F90BEC6009C76DA /* Equation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Equation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				E51776111F86B47500F074F2 /* AxesDrawer.swift */,
 				E51776131F86B98000F074F2 /* GraphView.swift */,
 				E51D046A1F90BCFF009C76DA /* GraphViewController.swift */,
+				E51D046C1F90BEC6009C76DA /* Equation.swift */,
 				E50A8B941F756C6C000BFC35 /* Main.storyboard */,
 				E50A8BA91F7576B5000BFC35 /* Supporting Files */,
 			);
@@ -159,6 +162,7 @@
 				E51776141F86B98000F074F2 /* GraphView.swift in Sources */,
 				E50A8BA41F756D1B000BFC35 /* CalculatorBrain.swift in Sources */,
 				E51776121F86B47500F074F2 /* AxesDrawer.swift in Sources */,
+				E51D046D1F90BEC6009C76DA /* Equation.swift in Sources */,
 				E51D046B1F90BCFF009C76DA /* GraphViewController.swift in Sources */,
 				E50A8B931F756C6C000BFC35 /* CalculatorViewController.swift in Sources */,
 				E50A8B911F756C6C000BFC35 /* AppDelegate.swift in Sources */,
